@@ -17,25 +17,26 @@ public class Snippets {
 
   void browser_command_examples() {
     open("https://google.com");
-    open("/customer/orders");     // -Dselenide.baseUrl=http://123.23.23.1
+    open("/customer/orders"); // удобно так делать на проектах, где есть разные среды Test, Prod и тд.
+    // -Dselenide.baseUrl=http://123.23.23.1
     open("/", AuthenticationType.BASIC,
             new BasicAuthCredentials("", "user", "password"));
 
-    Selenide.back();
-    Selenide.refresh();
+    Selenide.back(); // кнопка "Назад"
+    Selenide.refresh(); // кнопка "Перезагрузить"
 
-    Selenide.clearBrowserCookies();
-    Selenide.clearBrowserLocalStorage();
+    Selenide.clearBrowserCookies(); // Очистка Cookies
+    Selenide.clearBrowserLocalStorage(); // Очистка Local Storage
     executeJavaScript("sessionStorage.clear();"); // no Selenide command for this yet
 
-    Selenide.confirm(); // OK in alert dialogs
-    Selenide.dismiss(); // Cancel in alert dialogs
+    Selenide.confirm(); // OK in alert dialogs // Подтверждение во всплывающих окнах
+    Selenide.dismiss(); // Cancel in alert dialogs // Отмена во всплывающих окнах
 
     Selenide.closeWindow(); // close active tab
     Selenide.closeWebDriver(); // close browser completely
 
-    Selenide.switchTo().frame("new");
-    Selenide.switchTo().defaultContent(); // return from frame back to the main DOM
+    Selenide.switchTo().frame("new"); // Переход во фрейм по имени или селктору
+    Selenide.switchTo().defaultContent(); // return from frame back to the main DOM  // Переход во фрейм по умолчанию
 
     Selenide.switchTo().window("The Internet");
 
@@ -49,23 +50,27 @@ public class Snippets {
     $("div").click();
     element("div").click();
 
-    $("div", 2).click(); // the third div
+    $("div", 2).click();
+    // Если нужен не первый n-ый div, то можно указать его индекс
+    // Важно помнить, что нумерация начинается с нуля
+    // В примере найдется третий div
 
     $x("//h1/div").click();
     $(byXpath("//h1/div")).click();
 
-    $(byText("full text")).click();
-    $(withText("ull tex")).click();
+    $(byText("full text")).click(); // Поиск по полной строке
+    $(withText("ull tex")).click(); // Поиск по подстроке
 
+    // Поиск по тегу и тексту одновременно
     $(byTagAndText("div", "full text"));
     $(withTagAndText("div", "ull text"));
 
-    $("").parent();
-    $("").sibling(1);
-    $("").preceding(1);
-    $("").closest("div");
-    $("").ancestor("div"); // the same as closest
-    $("div:last-child");
+    $("").parent(); // По родителю
+    $("").sibling(1); // Поиск по дочерним элементам (сверху вниз)
+    $("").preceding(1); // То же, что и sibling, но снизу вверх
+    $("").closest("div"); // Ищет предков элемента снизу вверх
+    $("").ancestor("div"); // То же, что и closest // the same as closest
+    $("div:last-child"); // Поиск по псевдоселекторам
 
     $("div").$("h1").find(byText("abc")).click();
     // very optional
