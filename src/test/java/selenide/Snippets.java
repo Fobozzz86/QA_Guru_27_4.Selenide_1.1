@@ -87,18 +87,20 @@ public class Snippets {
   void actions_examples() {
     $("").click();
     $("").doubleClick();
-    $("").contextClick();
+    $("").contextClick(); // Клик ПКМ
 
-    $("").hover();
+    $("").hover(); // Подвести курсор
 
-    $("").setValue("text");
-    $("").append("text");
-    $("").clear();
-    $("").setValue(""); // clear
+    $("").setValue("text"); // Очистить поле и поместить значение
+    $("").append("text"); // Не очищать поле и поместить значение
+    $("").clear(); // Очистить поле
+    $("").setValue(""); // Очистить поле путем помещения в поле пустой строки
 
-    $("div").sendKeys("c"); // hotkey c on element
-    actions().sendKeys("c").perform(); //hotkey c on whole application
+    $("div").sendKeys("c"); // Нажать клавишу на конкретном элементе
+    actions().sendKeys("c").perform(); // Нажать клавишу во всем приложении
     actions().sendKeys(Keys.chord(Keys.CONTROL, "f")).perform(); // Ctrl + F
+
+    // Пример применения клавиши по тегу html (вся страница, т.е. во всем приложении)
     $("html").sendKeys(Keys.chord(Keys.CONTROL, "f"));
 
     $("").pressEnter();
@@ -107,6 +109,7 @@ public class Snippets {
 
 
     // complex actions with keybord and mouse, example
+    // Подвинуть курсор к элементу, кликнуть и держать, передвинуть по X и Y, отпустить кнопку мыши
     actions().moveToElement($("div")).clickAndHold().moveByOffset(300, 200).release().perform();
 
     // old html actions don't work with many modern frameworks
@@ -124,34 +127,50 @@ public class Snippets {
     $("").shouldNot(appear);
 
 
-    //longer timeouts
+    //longer timeouts // Кастомная настройка таймаута
     $("").shouldBe(visible, Duration.ofSeconds(30));
 
   }
 
   void conditions_examples() {
+    // Видимый/скрытый элемент
     $("").shouldBe(visible);
     $("").shouldBe(hidden);
 
+    // Условия содержания текста
+
+    // Поиск по подстроке
     $("").shouldHave(text("abc"));
+    //Поиск полного совпадения
     $("").shouldHave(exactText("abc"));
+    // Поиск с учетом регистра по подстроке
     $("").shouldHave(textCaseSensitive("abc"));
+    // Поиск полного совпадения с учетом регистра
     $("").shouldHave(exactTextCaseSensitive("abc"));
+    // Сложные условия
     $("").should(matchText("[0-9]abc$"));
 
+    // CSS
+
+    // Проверка класса
     $("").shouldHave(cssClass("red"));
+    // Проверка элемента
     $("").shouldHave(cssValue("font-size", "12"));
 
-    $("").shouldHave(value("25"));
-    $("").shouldHave(exactValue("25"));
-    $("").shouldBe(empty);
+    // Поля ввода
+    $("").shouldHave(value("25")); // поле содержит ...
+    $("").shouldHave(exactValue("25")); // поле содержит точно это значение
+    $("").shouldBe(empty); // поле пустое
 
+    // Атрибуты
     $("").shouldHave(attribute("disabled"));
     $("").shouldHave(attribute("name", "example"));
     $("").shouldHave(attributeMatching("name", "[0-9]abc$"));
 
+    // Чекбоксы
     $("").shouldBe(checked); // for checkboxes
 
+    // Проверка нахождения элемента в DOM, при этом пользователь может его не видеть
     // Warning! Only checks if it is in DOM, not if it is visible! You don't need it in most tests!
     $("").should(exist);
 
@@ -161,58 +180,83 @@ public class Snippets {
   }
 
   void collections_examples() {
+    // Коллекции позволяют искать много элементов удовлетворяющих одному и тому же условию
+
+    // Коллекции обозначаются двойным знаком доллара — $$. В Kotlin следует использовать ключевое слово elements
 
     $$("div"); // does nothing!
+    elements("div");
 
     $$x("//div"); // by XPath
 
-    // selections
+    // selections у filterBy - нет экшена click
+    // Фильтруется элемент удовлетворяющий условию text("123")
     $$("div").filterBy(text("123")).shouldHave(size(1));
+    // Противоположность filterBy остаются только те элементы, которые не содержат условие text("123")
     $$("div").excludeWith(text("123")).shouldHave(size(1));
 
-    $$("div").first().click();
+    $$("div").first().click(); // первый элемент
     elements("div").first().click();
     // $("div").click();
-    $$("div").last().click();
-    $$("div").get(1).click(); // the second! (start with 0)
-    $("div", 1).click(); // same as previous
+
+    $$("div").last().click(); // первый элемент
+    $$("div").get(1).click(); // по номеру элемент -- the second! (start with 0) --
+    $("div", 1).click(); // same as previous --случайно первый элемент не подошел, нужен именно второй--
     $$("div").findBy(text("123")).click(); //  finds first
 
     // assertions
+    // Размер
     $$("").shouldHave(size(0));
     $$("").shouldBe(CollectionCondition.empty); // the same
 
+    // Подтекст
     $$("").shouldHave(texts("Alfa", "Beta", "Gamma"));
+    // Текст с полным соответствием
     $$("").shouldHave(exactTexts("Alfa", "Beta", "Gamma"));
 
+    // Текст без учета порядка
     $$("").shouldHave(textsInAnyOrder("Beta", "Gamma", "Alfa"));
     $$("").shouldHave(exactTextsCaseSensitiveInAnyOrder("Beta", "Gamma", "Alfa"));
 
+    // Поиск конкретного элемента по тексту
     $$("").shouldHave(itemWithText("Gamma")); // only one text
 
+    // Проверка размера коллекции
     $$("").shouldHave(sizeGreaterThan(0));
     $$("").shouldHave(sizeGreaterThanOrEqual(1));
     $$("").shouldHave(sizeLessThan(3));
     $$("").shouldHave(sizeLessThanOrEqual(2));
 
-
   }
 
   void file_operation_examples() throws FileNotFoundException {
 
+    // У Алексея Виноградова есть видео про кнопку Download, где все подробно рассказывается
+    // Загрузка, но работает только с <a href="..">
     File file1 = $("a.fileLink").download(); // only for <a href=".."> links
+
+    // Более простая загрузка по кнопке
     File file2 = $("div").download(DownloadOptions.using(FileDownloadMode.FOLDER)); // more common options, but may have problems with Grid/Selenoid
 
     File file = new File("src/test/resources/readme.txt");
+    // Загрузка файла на сайт
     $("#file-upload").uploadFile(file);
     $("#file-upload").uploadFromClasspath("readme.txt");
-    // don't forget to submit!
+
+    // Файлы обычно на сайт не загружаются сами
+    // И загрузку надо подтвердить нажатием кнопки
     $("uploadButton").click();
   }
 
   void javascript_examples() {
+
+    // Запуск
     executeJavaScript("alert('selenide')");
+
+    // Запуск с аргументами
     executeJavaScript("alert(arguments[0]+arguments[1])", "abc", 12);
+
+    // Запуск с аргументами и возвращением результата
     long fortytwo = executeJavaScript("return arguments[0]*arguments[1];", 6, 7);
 
   }
