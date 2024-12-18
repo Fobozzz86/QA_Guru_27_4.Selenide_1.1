@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 
-public class DragAndDrop {
+public class DragAndDropTest {
 
   @Test
   void dragAndDrop(){
