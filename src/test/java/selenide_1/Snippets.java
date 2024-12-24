@@ -1,4 +1,4 @@
-package selenide;
+package selenide_1;
 
 import com.codeborne.selenide.*;
 import org.openqa.selenium.*;

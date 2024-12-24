@@ -1,4 +1,4 @@
-package github;
+package github.homework;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +25,7 @@ public class SoftAssertionsTest {
 //        - Убедитесь, что в списке страниц (Pages) есть страница SoftAssertions
 //        - Откройте страницу SoftAssertions, проверьте что внутри есть пример кода для JUnit5
 
-        open("/selenide/selenide/");
+        open("/selenide_1/selenide/");
         $("#wiki-tab").click();
         $("#wiki-body").$$("li").shouldHave(itemWithText("Soft assertions"));
         $(byText("Soft assertions")).click();
